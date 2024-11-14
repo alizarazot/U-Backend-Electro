@@ -57,16 +57,34 @@ def get_plate(img_path, debug=False):
     contours = sorted(contours, key=cv.contourArea, reverse=True)
 
     # Buscar el contorno que se parezca más a un rectángulo (4 lados).
-    location = None
+    image_ocr = image
     for contour in contours:
         approx = cv.approxPolyDP(contour, 10, True)
         if is_likely_square(approx):
-            location = approx
+            image_ocr = crop_square(image, image_gray, contour, debug)
             break
-    if location is None:
-        print("Placa no detectada.")
-        return
+    else:
+        print("Placa no detectada, utilizando TODA la imagen.")
 
+    """
+    Paso 3: Usar OCR para extraer el texto de la placa.
+    """
+
+    r = easyocr.Reader(["en"])
+    plate = r.readtext(image_ocr)
+
+    plate_text = ""
+    for text in plate:
+        if plate_text == "":
+            plate_text = text[1]
+            continue
+        plate_text += " " + text[1]
+
+    # Mostrar la imagen.
+    show_image(f"Placa: {plate_text}", image)
+
+
+def crop_square(image, image_gray, location, debug):
     # Remover todo excepto la placa en la imagen.
     image_mask = np.zeros(
         image_gray.shape, np.uint8
@@ -85,22 +103,7 @@ def get_plate(img_path, debug=False):
     if debug:
         show_image("Placa", image_plate)
 
-    """
-    Paso 3: Usar OCR para extraer el texto de la placa.
-    """
-
-    r = easyocr.Reader(["en"])
-    plate = r.readtext(image)
-
-    plate_text = ""
-    for text in plate:
-        if plate_text == "":
-            plate_text = text[1]
-            continue
-        plate_text += " " + text[1]
-
-    # Mostrar la imagen.
-    show_image(f"Placa: {plate_text}", image)
+    return image_plate
 
 
 def is_likely_square(approx):
