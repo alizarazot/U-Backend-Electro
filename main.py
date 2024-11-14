@@ -91,10 +91,16 @@ def get_plate(img_path, debug=False):
 
     r = easyocr.Reader(["en"])
     plate = r.readtext(image)
-    plate = plate[0][1]
+
+    plate_text = ""
+    for text in plate:
+        if plate_text == "":
+            plate_text = text[1]
+            continue
+        plate_text += " " + text[1]
 
     # Mostrar la imagen.
-    show_image(f"Placa: {plate}", image)
+    show_image(f"Placa: {plate_text}", image)
 
 
 def is_likely_square(approx):
