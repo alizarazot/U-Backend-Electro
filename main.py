@@ -54,17 +54,18 @@ def get_plate(img_path, debug=False):
     # Buscar contornos.
     contours = cv.findContours(image_edged.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contours = imutils.grab_contours(contours)
-    # Elegir los 10 mejores contornos.
     contours = sorted(contours, key=cv.contourArea, reverse=True)
 
     # Buscar el contorno que se parezca más a un rectángulo (4 lados).
     location = None
     for contour in contours:
         approx = cv.approxPolyDP(contour, 10, True)
-        if len(approx) == 4:
+        if is_likely_square(approx):
             location = approx
             break
-    # print("Ubicación de la placa:", location)
+    if location is None:
+        print("Placa no detectada.")
+        return
 
     # Remover todo excepto la placa en la imagen.
     image_mask = np.zeros(
@@ -88,12 +89,53 @@ def get_plate(img_path, debug=False):
     """
 
     r = easyocr.Reader(["en"])
-    plate = r.readtext(image_plate)
+    plate = r.readtext(image)
     print(plate)
     plate = plate[0][1]
 
     # Mostrar la imagen.
     show_image(f"Placa: {plate}", image)
+
+
+def is_likely_square(approx):
+    # Un cuadrado tiene exactamente cuatro vértices.
+    if len(approx) != 4:
+        return False
+
+    # Verificar que las vértices estén en una posición similar a la de un cuadrado.
+    # 1----2
+    # |    |
+    # 3----4
+    points = [(int(point[0][0]), int(point[0][1])) for point in approx]
+
+    x1y1, x2y2, x3y3, x4y4 = None, None, None, None
+
+    # Ubicar X1Y1 y X3Y3.
+    x_a = min(points, key=lambda t: t[0])
+    points.remove(x_a)
+    x_b = min(points, key=lambda t: t[0])
+    points.remove(x_b)
+
+    if x_a[1] > x_b[1]:
+        x1y1 = x_a
+        x3y3 = x_b
+    else:
+        x1y1 = x_b
+        x3y3 = x_a
+
+    # Ubicar X2Y2 y X4Y4.
+    x2y2 = max(points, key=lambda t: t[1])
+    points.remove(x2y2)
+    x4y4 = points[0]
+
+    # Si x1y1(x) está más cerca a x2y2(x) que x3y3(x), probablemente no sea un cuadrado.
+    if (x2y2[0] - x1y1[0]) < ((x4y4[0] - x3y3[0]) / 2):
+        return False
+    if (x4y4[0] - x3y3[0]) < ((x2y2[0] - x1y1[0]) / 2):
+        return False
+    # TODO: Hacer lo mismo en el eje vertical.
+
+    return True
 
 
 def show_image(title, image, cvt_color=cv.COLOR_BGR2RGB):
