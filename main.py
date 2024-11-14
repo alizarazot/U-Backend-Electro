@@ -81,8 +81,9 @@ def get_plate(img_path, debug=False):
     x1, y1 = np.min(x), np.min(y)  # Coordenadas superior izquierda de la placa.
     x2, y2 = np.max(x), np.max(y)  # Coordenadas inferior derecha de la placa.
     # Recortar la imagen.
-    image_plate = image_gray[x1 : x2 + 1, y1 : y2 + 1]
-    # show_image('Placa', image_plate)
+    image_plate = image[x1 : x2 + 1, y1 : y2 + 1]
+    if debug:
+        show_image("Placa", image_plate)
 
     """
     Paso 3: Usar OCR para extraer el texto de la placa.
@@ -90,7 +91,6 @@ def get_plate(img_path, debug=False):
 
     r = easyocr.Reader(["en"])
     plate = r.readtext(image)
-    print(plate)
     plate = plate[0][1]
 
     # Mostrar la imagen.
