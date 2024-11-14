@@ -25,6 +25,8 @@ Si no puede ver las imágenes asegúrese de que su instalación de Python tenga 
 
 Hasta el momento ha sido desarrollado desde Linux, aún no se ha probado en Windows. _PRs_ en GitHub bienvenidos.
 
+La instalación de las dependencias requiere alrededor de **1.2GiB** de espacio disponible, además, la primera vez que ejecute el programa, descargará alrededor de **1GiB** con los datos de reconocimiento de texto.
+
 ## Créditos
 
 - <https://www.geeksforgeeks.org/automatic-license-number-plate-recognition-system/>
