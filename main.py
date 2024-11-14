@@ -15,13 +15,20 @@ import easyocr
 
 from matplotlib import pyplot as plot
 
+import glob
 import sys
 
 def main():
-    img_path = sys.argv[1]
+    debug = False
+    if len(sys.argv) == 2 and sys.argv[1] == "debug":
+        debug = True
 
+    for image in glob.iglob("assets/car*.jpg"):
+        get_plate(image, debug)
+
+def get_plate(img_path, debug=False):
     image = cv.imread(img_path)
-    #show_image('Imagen original', image)
+    if debug: show_image('Imagen original', image)
 
     """
     Paso 1: Simplificar imagen.
@@ -60,7 +67,7 @@ def main():
     image_mask = np.zeros(image_gray.shape, np.uint8) # Imagen negra del mismo tamaño de la original.
     image_cleaned = cv.drawContours(image_mask, [location], 0, 255, -1)
     image_cleaned = cv.bitwise_and(image, image, mask=image_mask)
-    #show_image('Solo la placa en la imagen', image_cleaned)
+    if debug: show_image('Solo la placa en la imagen', image_cleaned)
 
     # Crear nueva imagen conteniendo solamente la placa.
     x, y = np.where(image_mask == 255) # Coordenadas de las esquinas de la placa.
@@ -76,6 +83,7 @@ def main():
 
     r = easyocr.Reader(['en'])
     plate = r.readtext(image_plate)
+    print(plate)
     plate = plate[0][1]
 
     # Mostrar la imagen.
