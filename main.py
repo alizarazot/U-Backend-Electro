@@ -18,6 +18,9 @@ from matplotlib import pyplot as plot
 import glob
 import sys
 
+# Preload OCR model.
+ocr_reader = easyocr.Reader(["en", "es"])
+
 
 def main():
     debug = False
@@ -70,15 +73,8 @@ def get_plate(img_path, debug=False):
     Paso 3: Usar OCR para extraer el texto de la placa.
     """
 
-    r = easyocr.Reader(["en"])
-    plate = r.readtext(image_ocr)
-
-    plate_text = ""
-    for text in plate:
-        if plate_text == "":
-            plate_text = text[1]
-            continue
-        plate_text += " " + text[1]
+    plate = ocr_reader.readtext(image_ocr, detail=0)
+    plate_text = " ".join(plate)
 
     # Mostrar la imagen.
     show_image(f"Placa: {plate_text}", image)
