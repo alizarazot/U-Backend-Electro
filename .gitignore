@@ -7,3 +7,6 @@ lib64
 pyvenv.cfg
 Scripts/
 env/
+
+# Python files.
+/**/__pycache__/
