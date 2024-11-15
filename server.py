@@ -3,7 +3,7 @@
 import os
 from urllib.error import URLError
 
-from flask import Flask
+from flask import Flask, send_file
 
 from parking import image
 
@@ -16,7 +16,15 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
+def home():
+    return send_file("frontend/index.html")
+
+@app.route("/style.css")
+def static_style():
+    return send_file("frontend/style.css")
+
+@app.route("/download")
+def download():
     try:
         path = image.save_live(CAPTURE_URL)
     except URLError as e:

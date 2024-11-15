@@ -19,7 +19,7 @@
         <li>Próximo 1h</li>
         <li>
           <h2>Cámara</h2>
-          <img class="Camera" src="assets/driveway.webp" />
+          <img id="camera" class="Camera"/>
         </li>
         <li>Tema</li>
       </ul>
@@ -89,5 +89,15 @@
         />
       </symbol>
     </svg>
+
+    <script>
+      let camera = document.querySelector("#camera")
+
+      setInterval( _ => {
+        if (!camera.complete) {return}
+ 
+        camera.src = "http://192.168.0.110/capture?t=" + new Date().getTime();
+      }, 250)
+    </script>
   </body>
 </html>
