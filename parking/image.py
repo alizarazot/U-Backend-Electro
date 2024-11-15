@@ -16,6 +16,8 @@ def save_live(server_url="http://localhost/capture") -> str:
     Retorna la ruta de la imagen guardada.
     """
 
-    filepath = path.join(PLATES_DIR, datetime.now().strftime("%Y-%m-%d-%H-%M"))
+    filepath = path.join(
+        PLATES_DIR, datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
+    )
     request.urlretrieve(server_url, filepath)
     return filepath
