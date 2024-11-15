@@ -1,0 +1,16 @@
+{
+  "name": "frontend-electro",
+  "type": "module",
+  "scripts": {
+    "dev": "serve",
+    "lint": "stylelint --fix '**/*.css'",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "serve": "^14.2.4",
+    "stylelint": "^16.10.0",
+    "stylelint-config-clean-order": "^6.1.0",
+    "stylelint-config-standard": "^36.0.1"
+  }
+}

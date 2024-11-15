@@ -1,0 +1,159 @@
+:root {
+  /* Catppuccin Latte: <https://catppuccin.com/palette> */
+  --color-mantle: hsl(220deg 22% 92%);
+  --color-base: hsl(220deg 23% 95%);
+  --color-surface0: hsl(223deg 16% 83%);
+  --color-text: hsl(234deg 16% 35%);
+  --color-teal: hsl(183deg 74% 35%);
+  --color-love: hsl(343deg 35% 55%);
+
+  /* Shades. */
+  --filter-hover: brightness(85%);
+  --filter-click: brightness(77%);
+
+  /* Units. */
+  --s1: 8px;
+  --s2: calc(var(--s1) * 2);
+  --s4: calc(var(--s1) * 4);
+  --s6: calc(var(--s1) * 6);
+  --s8: calc(var(--s1) * 8);
+  --text: 2.2rem;
+  --text1: calc(var(--text2) + var(--text-increment));
+  --text2: calc(var(--text3) + var(--text-increment));
+  --text3: calc(var(--text4) + var(--text-increment));
+  --text4: calc(var(--text5) + var(--text-increment));
+  --text5: calc(var(--text6) + var(--text-increment));
+  --text6: calc(var(--text) + var(--text-increment));
+  --text-increment: 0.2rem;
+
+  font-size: 62.5%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  user-select: none;
+
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: minmax(0, 1fr);
+
+  height: 100dvh;
+  margin: 0;
+
+  font-size: var(--text);
+  color: var(--color-text);
+
+  background-color: var(--color-base);
+}
+
+.Nav {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-mantle);
+}
+
+.Nav ul {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  margin: 0;
+  padding: 0;
+}
+
+.Nav li {
+  cursor: pointer;
+  padding: var(--s2);
+  list-style: none;
+  background-color: var(--color-mantle);
+}
+
+.Nav h2 {
+  font-size: var(--text2);
+}
+
+.Nav li:hover {
+  filter: var(--filter-hover);
+}
+
+.Nav li:active {
+  filter: var(--filter-click);
+}
+
+.Nav img {
+  width: 100%;
+}
+
+.Header h1 {
+  margin: 0;
+  padding: var(--s2);
+  font-size: var(--text1);
+  text-align: center;
+}
+
+/* || Camera section. */
+
+.Camera {
+  display: block;
+  width: 100%;
+  border-radius: var(--s1);
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s2);
+
+  padding: var(--s2);
+}
+
+.Parking {
+  overflow-y: auto;
+  padding: var(--s2);
+  background-color: var(--color-surface0);
+  border-radius: var(--s1);
+}
+
+.Parking h3 {
+  margin: 0;
+  padding: var(--s2);
+  padding-top: 0;
+
+  font-size: var(--text3);
+  text-align: center;
+}
+
+.Parking .Status {
+  display: flex;
+  gap: var(--s2);
+}
+
+.Status-msg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  align-items: center;
+  justify-content: center;
+}
+
+.Status-msg .Icon {
+  --size: var(--s6);
+
+  width: var(--size);
+  height: var(--size);
+}
+
+.Status-msg span {
+  text-align: center;
+}
+
+.Status-msg :where(.Icon, span) {
+  color: var(--color-love);
+}
