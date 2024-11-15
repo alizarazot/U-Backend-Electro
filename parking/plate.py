@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 El proceso de reconocimiento de placas requiere de los siguientes pasos:
     1. Simplificar la imagen: Dejarla a blanco y negro y solo dejar los bordes.
@@ -15,24 +13,19 @@ import easyocr
 
 from matplotlib import pyplot as plot
 
-import glob
-import sys
-
 # Preload OCR model.
-ocr_reader = easyocr.Reader(["en", "es"])
+OCR_READER = easyocr.Reader(["en", "es"])
 
 
-def main():
-    debug = False
-    if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        debug = True
+def scan(img_path, debug=False) -> str:
+    """
+    Escanea una imagen y devuelve la placa.
 
-    for image in glob.iglob("assets/car*.jpg"):
-        get_plate(image, debug)
+    Si no se encuentra la placa, retorna una cadena vacía.
+    """
 
-
-def get_plate(img_path, debug=False):
     image = cv.imread(img_path)
+
     if debug:
         show_image("Imagen original", image)
 
@@ -43,41 +36,54 @@ def get_plate(img_path, debug=False):
     # Convertir a escala de grises.
     image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # Reducir ruido.
+
     image_gray = cv.bilateralFilter(image_gray, 11, 17, 17)
     # show_image('Imagen en escala de grises', image_gray)
-
     # Extraer bordes de la imagen.
     image_edged = cv.Canny(image_gray, 30, 200)
     # show_image('Bordes de la imagen', image_edged)
 
     """
+
     Paso 2: Buscar la placa.
     """
 
     # Buscar contornos.
+
     contours = cv.findContours(image_edged.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     contours = imutils.grab_contours(contours)
     contours = sorted(contours, key=cv.contourArea, reverse=True)
 
     # Buscar el contorno que se parezca más a un rectángulo (4 lados).
+
     image_ocr = image
+
     for contour in contours:
         approx = cv.approxPolyDP(contour, 10, True)
         if is_likely_square(approx):
             image_ocr = crop_square(image, image_gray, contour, debug)
             break
+
     else:
+
         print("Placa no detectada, utilizando TODA la imagen.")
 
     """
     Paso 3: Usar OCR para extraer el texto de la placa.
     """
 
-    plate = ocr_reader.readtext(image_ocr, detail=0)
-    plate_text = " ".join(plate)
+    plate = OCR_READER.readtext(image_ocr, detail=0)
+
+    plate_text = ""
+    if len(plate) == 0:
+        plate_text = " ".join(plate)
 
     # Mostrar la imagen.
-    show_image(f"Placa: {plate_text}", image)
+
+    if debug:
+        show_image(f"Placa: {plate_text}", image)
+
+    return plate_text
 
 
 def crop_square(image, image_gray, location, debug):
@@ -149,7 +155,3 @@ def show_image(title, image, cvt_color=cv.COLOR_BGR2RGB):
     plot.imshow(image)
     plot.title(title)
     plot.show()
-
-
-if __name__ == "__main__":
-    main()
