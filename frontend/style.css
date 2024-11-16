@@ -35,69 +35,53 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "Inter";
+  src:
+    url("static/Inter.ttf") format("truetype"),
+    url("assets/Inter.ttf") format("truetype");
+}
+
 body {
   user-select: none;
 
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 2fr 3fr;
   grid-template-rows: minmax(0, 1fr);
 
   height: 100dvh;
   margin: 0;
 
   font-size: var(--text);
+  font-family: Inter;
   color: var(--color-text);
 
   background-color: var(--color-base);
 }
 
 .Nav {
+  padding: var(--s2);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   background-color: var(--color-mantle);
 }
 
-.Nav ul {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
-  margin: 0;
-  padding: 0;
-}
-
-.Nav li {
-  cursor: pointer;
-  padding: var(--s2);
-  list-style: none;
-  background-color: var(--color-mantle);
-}
-
-.Nav h2 {
-  font-size: var(--text2);
-}
-
-.Nav li:hover {
-  filter: var(--filter-hover);
-}
-
-.Nav li:active {
-  filter: var(--filter-click);
-}
-
-.Nav img {
-  width: 100%;
-}
-
 .Header h1 {
   margin: 0;
-  padding: var(--s2);
+
   font-size: var(--text1);
   text-align: center;
 }
 
-/* || Camera section. */
+.Nav .container {
+  margin: auto;
+  width: 100%;
+}
+
+.Nav h2 {
+  margin-bottom: var(--s1);
+}
 
 .Camera {
   display: block;
@@ -106,54 +90,53 @@ body {
 }
 
 main {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--s2);
-
-  padding: var(--s2);
-}
-
-.Parking {
-  overflow-y: auto;
-  padding: var(--s2);
-  background-color: var(--color-surface0);
-  border-radius: var(--s1);
-}
-
-.Parking h3 {
-  margin: 0;
-  padding: var(--s2);
-  padding-top: 0;
-
-  font-size: var(--text3);
-  text-align: center;
-}
-
-.Parking .Status {
-  display: flex;
-  gap: var(--s2);
-}
-
-.Status-msg {
   display: flex;
   flex-direction: column;
-  gap: var(--s1);
+  padding: var(--s2);
+}
+
+.Card {
+  background-color: var(--color-surface0);
+  border-radius: var(--s1);
+  padding: var(--s2);
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 }
 
-.Status-msg .Icon {
-  --size: var(--s6);
-
-  width: var(--size);
-  height: var(--size);
+.Card h3 {
+  display: block;
+  background-color: rgb(254, 225, 1);
+  border: 3px solid black;
+  color: black;
+  padding: 5px;
+  margin: 0;
+}
+.Card .time::before {
+  content: "Tiempo: ";
+  font-weight: bold;
+}
+.Card .money::before {
+  content: "Cobro: ";
+  font-weight: bold;
 }
 
-.Status-msg span {
-  text-align: center;
+/* || Debug. */
+
+._btns {
+  display: flex;
+  gap: 10px;
 }
 
-.Status-msg :where(.Icon, span) {
-  color: var(--color-love);
+._btns * {
+  width: 100%;
+  height: 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+._btns *:active {
+  font-weight: bold;
 }

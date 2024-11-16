@@ -9,6 +9,7 @@ from parking import image
 from parking import plate
 
 # Variables de entorno.
+# TODO: Añadirlo como plantilla en el HTML.
 CAPTURE_URL = os.getenv("CAPTURE_URL") or "http://192.168.0.110/capture"
 PLATES_DIR = os.getenv("PLATES_DIR") or path.abspath(
     path.join(path.dirname(__file__), "data", "plates")
