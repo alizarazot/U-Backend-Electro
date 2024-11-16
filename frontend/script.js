@@ -1,5 +1,4 @@
 let camera = document.querySelector("#camera");
-
 setInterval((_) => {
   if (!camera.complete) {
     return;
@@ -8,11 +7,24 @@ setInterval((_) => {
   camera.src = "http://192.168.0.110/capture?t=" + new Date().getTime();
 }, 250);
 
-let button = document.querySelector("#button");
-let plate = document.querySelector("#plate");
+function generateCard(plate, time, money) {
+    return `
+    <div class="Card">
+      <h3>${plate}</h3>
+      <span class="time">${time}</span>
+      <span class="money">${money}</span>
+    </div>
+    `
+}
 
-button.addEventListener("click", async (_) => {
-  plate.innerText = "Leyendo...";
-  let response = await fetch("/plate");
-  plate.innerText = "Placa: " + (await response.text());
-});
+async function getPlate() {
+  return await (await fetch("/plate")).text()
+}
+
+let btnIn = document.querySelector("#btn-in")
+let btnOut = document.querySelector("#btn-out")
+let mainContainer = document.querySelector("main")
+
+btnIn.addEventListener("click", async _ => {
+  mainContainer.innerHTML += generateCard(await getPlate(), "12:15", "$24500")
+})

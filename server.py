@@ -3,7 +3,7 @@ import os
 from os import path
 from urllib.error import URLError
 
-from flask import Flask, send_file
+from flask import Flask, send_file, send_from_directory
 
 from parking import image
 from parking import plate
@@ -32,7 +32,9 @@ def plate_endpoint():
 
 
 # Recursos estáticos.
-
+@app.route("/static/<path:path>")
+def static_files(path):
+    return send_file(path.join("frontend/assets", path))
 
 @app.route("/style.css")
 def static_style():
