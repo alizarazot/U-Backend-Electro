@@ -6,6 +6,7 @@
     <title>Parqueadero</title>
 
     <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
   </head>
 
   <body>
@@ -19,63 +20,15 @@
         <li>Próximo 1h</li>
         <li>
           <h2>Cámara</h2>
-          <img id="camera" class="Camera"/>
+          <img id="camera" class="Camera" />
           <button id="button">Leer placa</button>
           <span id="plate">Placa es: </span>
         </li>
         <li>Tema</li>
       </ul>
     </nav>
-    <main>
-      <div class="Parking" data-camera-id="1">
-        <h3>Cámara 1</h3>
-        <div class="Status">
-          <div class="Status-msg">
-            <svg class="Icon">
-              <use href="#close-o"></use>
-            </svg>
-            <span> Ocupado </span>
-          </div>
-          <img class="Camera" src="assets/parked.webp" />
-        </div>
-      </div>
-      <div class="Parking" data-camera-id="2">
-        <h3>Cámara 2</h3>
-        <div class="Status">
-          <div class="Status-msg">
-            <svg class="Icon">
-              <use href="#close-o"></use>
-            </svg>
-            <span> Ocupado </span>
-          </div>
-          <img class="Camera" src="assets/parked.webp" />
-        </div>
-      </div>
-      <div class="Parking" data-camera-id="3">
-        <h3>Cámara 3</h3>
-        <div class="Status">
-          <div class="Status-msg">
-            <svg class="Icon">
-              <use href="#close-o"></use>
-            </svg>
-            <span> Ocupado </span>
-          </div>
-          <img class="Camera" src="assets/parked.webp" />
-        </div>
-      </div>
-      <div class="Parking" data-camera-id="4">
-        <h3>Cámara 4</h3>
-        <div class="Status">
-          <div class="Status-msg">
-            <svg class="Icon">
-              <use href="#close-o"></use>
-            </svg>
-            <span> Ocupado </span>
-          </div>
-          <img class="Camera" src="assets/parked.webp" />
-        </div>
-      </div>
-    </main>
+
+    <main></main>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
       <symbol viewBox="0 0 24 24" id="close-o">
@@ -91,24 +44,5 @@
         />
       </symbol>
     </svg>
-
-    <script>
-      let camera = document.querySelector("#camera")
-
-      setInterval( _ => {
-        if (!camera.complete) {return}
- 
-        camera.src = "http://192.168.0.110/capture?t=" + new Date().getTime();
-      }, 250)
-
-      let button = document.querySelector("#button")
-      let plate = document.querySelector("#plate")
-
-      button.addEventListener("click", async _ => {
-        plate.innerText = "Leyendo..."
-        let response = await fetch("/plate");
-        plate.innerText = "Placa: " + await response.text();
-      })
-    </script>
   </body>
 </html>

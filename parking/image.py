@@ -1,23 +1,20 @@
-from urllib import request
+from urllib.request import urlopen
 from datetime import datetime
+from shutil import copyfileobj
 
 import os
 from os import path
 
-PLATES_DIR = os.getenv("PLATES_DIR")
 
-if PLATES_DIR is None:
-    PLATES_DIR = path.abspath(path.join(path.dirname(__file__), "..", "data", "plates"))
-
-
-def save_live(server_url="http://localhost/capture") -> str:
+def save_image(url, dir) -> str:
     """
     Descarga la última imagen en vivo de la cámara.
     Retorna la ruta de la imagen guardada.
     """
 
-    filepath = path.join(
-        PLATES_DIR, datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
-    )
-    request.urlretrieve(server_url, filepath)
+    filepath = path.join(dir, datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg")
+
+    with urlopen(url) as in_stream, open(filepath, "wb") as out_file:
+        copyfileobj(in_stream, out_file)
+
     return filepath
