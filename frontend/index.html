@@ -20,6 +20,8 @@
         <li>
           <h2>Cámara</h2>
           <img id="camera" class="Camera"/>
+          <button id="button">Leer placa</button>
+          <span id="plate">Placa es: </span>
         </li>
         <li>Tema</li>
       </ul>
@@ -98,6 +100,15 @@
  
         camera.src = "http://192.168.0.110/capture?t=" + new Date().getTime();
       }, 250)
+
+      let button = document.querySelector("#button")
+      let plate = document.querySelector("#plate")
+
+      button.addEventListener("click", async _ => {
+        plate.innerText = "Leyendo..."
+        let response = await fetch("/plate");
+        plate.innerText = "Placa: " + await response.text();
+      })
     </script>
   </body>
 </html>

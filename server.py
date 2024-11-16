@@ -6,6 +6,7 @@ from urllib.error import URLError
 from flask import Flask, send_file
 
 from parking import image
+from parking import plate
 
 # Variables de entorno.
 CAPTURE_URL = os.getenv("CAPTURE_URL")
@@ -22,6 +23,10 @@ def home():
 @app.route("/style.css")
 def static_style():
     return send_file("frontend/style.css")
+
+@app.route("/plate")
+def plate_endpoint():
+    return plate.scan(image.save_live(CAPTURE_URL), False)
 
 @app.route("/download")
 def download():

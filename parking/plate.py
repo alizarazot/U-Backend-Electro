@@ -26,56 +26,10 @@ def scan(img_path, debug=False) -> str:
 
     image = cv.imread(img_path)
 
-    if debug:
-        show_image("Imagen original", image)
-
-    """
-    Paso 1: Simplificar imagen.
-    """
-
-    # Convertir a escala de grises.
-    image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    # Reducir ruido.
-
-    image_gray = cv.bilateralFilter(image_gray, 11, 17, 17)
-    # show_image('Imagen en escala de grises', image_gray)
-    # Extraer bordes de la imagen.
-    image_edged = cv.Canny(image_gray, 30, 200)
-    # show_image('Bordes de la imagen', image_edged)
-
-    """
-
-    Paso 2: Buscar la placa.
-    """
-
-    # Buscar contornos.
-
-    contours = cv.findContours(image_edged.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-    contours = imutils.grab_contours(contours)
-    contours = sorted(contours, key=cv.contourArea, reverse=True)
-
-    # Buscar el contorno que se parezca más a un rectángulo (4 lados).
-
-    image_ocr = image
-
-    for contour in contours:
-        approx = cv.approxPolyDP(contour, 10, True)
-        if is_likely_square(approx):
-            image_ocr = crop_square(image, image_gray, contour, debug)
-            break
-
-    else:
-
-        print("Placa no detectada, utilizando TODA la imagen.")
-
-    """
-    Paso 3: Usar OCR para extraer el texto de la placa.
-    """
-
-    plate = OCR_READER.readtext(image_ocr, detail=0)
+    plate = OCR_READER.readtext(image, detail=0)
 
     plate_text = ""
-    if len(plate) == 0:
+    if len(plate) != 0:
         plate_text = " ".join(plate)
 
     # Mostrar la imagen.
