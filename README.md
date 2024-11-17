@@ -33,7 +33,8 @@ El servidor se puede configurar utilizando las siguientes variables de entorno:
 
 - `FLASK_DEBUG`: Acepta los valores `0` y `1`, el cual alterna el modo de depuración para el servidor.
 - `CAPTURE_URL`: Una URL que responde con una imagen en formato JPEG, utilizado para obtener imágenes de la entrada del parqueadero.
-- `PLATES_DIR`: Ruta donde se guardarán las fotos de las placas, el directorio debe existir.
+- `CAPTURE_WAIT`: El tiempo de espera entre cada imagen en vivo generada.
+- `DATA_DIR`: Ruta donde se guardarán los datos, como fotos de placa y facturas.
 
 ## Información adicional
 

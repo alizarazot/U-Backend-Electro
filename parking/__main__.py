@@ -1,10 +1,16 @@
+# Script principal.
+
+
+# El modelo de concurrencia utilizado es GEvent (corutinas).
+from gevent import monkey, spawn
+
+# La librería estándar debe ser parcheada.
+monkey.patch_all()
+
 import warnings
 
+# Eliminar advertencias molestas.
 warnings.simplefilter(action="ignore", category=FutureWarning)
-
-from gevent import monkey, sleep, spawn
-
-monkey.patch_all()
 
 import os
 import json
@@ -12,61 +18,46 @@ import logging
 
 from os import path
 from urllib.error import URLError
-from base64 import b64encode
 
 from flask import Flask, render_template, send_file
 from flask_socketio import SocketIO
 
-from . import image
-from . import plate
+from . import services
 
 # Variables de entorno.
+
 CAPTURE_URL = os.getenv("CAPTURE_URL") or "http://192.168.0.110/capture"
+CAPTURE_WAIT = 0.5
+if capture_wait := os.getenv("CAPTURE_WAIT"):
+    CAPTURE_WAIT = float(capture_wait)
+
 # TODO: Usar directorio de datos general.
-PLATES_DIR = os.getenv("PLATES_DIR") or path.abspath(
-    path.join(path.dirname(__file__), "data", "plates")
+DATA_DIR = os.getenv("DATA_DIR") or path.abspath(
+    path.join(path.dirname(__file__), "..", "parking-data")
 )
 
+
+# Singletons.
 
 app = Flask(__name__)
 socketio = SocketIO(app)
 
+# TODO: Crear clase propia.
 plates = []
 
 
 # Página principal.
 @app.route("/")
-def home():
-    glet = spawn(update_image)
-    glet.join()
+def route_home():
+    spawn(
+        lambda: services.update_live_capture(
+            socketio, CAPTURE_URL, path.join(DATA_DIR, "plates")
+        )
+    ).join()
     return render_template("home.html")
 
 
-is_started = False
-
-
-def update_image():
-    global is_started
-    if is_started:
-        return
-    is_started = True
-    while True:
-        sleep(0.5)
-        path = image.save_image(CAPTURE_URL, PLATES_DIR, "live.jpg")
-        with open(path, "rb") as file:
-            encoded = b64encode(file.read())
-        socketio.emit("live", encoded.decode())
-
-
-# Punto de entrada para reconocimiento de placa.
-@app.route("/plate")
-def plate_endpoint():
-    p = plate.scan(image.save_image(CAPTURE_URL, PLATES_DIR))
-    plates.append(p)
-    socketio.emit("plates", json.dumps(plates))
-    return p
-
-
+# Eventos de Socket.IO
 @socketio.on("connected")
 def socket_connected(data):
     print("Connected client:", data)

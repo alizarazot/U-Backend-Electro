@@ -70,22 +70,22 @@ body {
   background-color: var(--color-mantle);
 }
 
-.Header h1 {
+.Header .title {
   margin: 0;
   font-size: var(--text1);
   text-align: center;
 }
 
-.Nav .container {
+.Camera-Container {
   width: 100%;
   margin: auto;
 }
 
-.Nav h2 {
+.Camera-Container .title {
   margin-bottom: var(--s1);
 }
 
-.Camera {
+.Camera-Container #camera {
   display: block;
   width: 100%;
   border-radius: var(--s1);
@@ -111,7 +111,7 @@ main {
   border-radius: var(--s1);
 }
 
-.Card h3 {
+.Card .plate {
   display: block;
 
   margin: 0;
@@ -130,29 +130,5 @@ main {
 
 .Card .money::before {
   content: "Cobro: ";
-  font-weight: bold;
-}
-
-/* || Debug. */
-
-._btns {
-  display: flex;
-  gap: 10px;
-}
-
-._btns * {
-  cursor: pointer;
-
-  width: 100%;
-  height: 30px;
-  margin-top: var(--s1);
-
-  color: var(--color-white);
-
-  background-color: var(--color-black);
-  border: none;
-}
-
-._btns *:active {
   font-weight: bold;
 }
