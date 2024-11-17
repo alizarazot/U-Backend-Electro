@@ -1,29 +1,26 @@
 
-# Backend (Electrónica General)
+# Parking (Parqueadero)
 
 > **Advertencia:** Trabajo en progreso.
 
-Sistema de reconocimiento de placas.
+Sistema de parqueadero automatizado, con reconocimiento de texto de la placa incluido.
 
-## Instalación
+## Inicio rápido
 
-1. Descarge e instale Python.
-2. Clone este repositorio.
-3. Cree un entorno virtual dentro del directorio del proyecto: `python -m venv --upgrade-deps .`.
-4. Active el entorno virtual (ejecutando el archivo correspondiente en `bin`), revise <https://docs.python.org/es/3/tutorial/venv.html>.
-5. Instale las dependencias: `pip install -r requeriments.txt`.
+El sistema de construcción utiliza [Hatch](https://hatch.pypa.io), por lo que necesitará tener instalada una versión de Python reciente, luego ejecute:
 
-## Uso
+```sh
+pip install hatch
+```
 
-Ejecute el _script_ principal con: `python main.py`.
+Actualmente se proveen dos comandos:
 
-Ejecute la variante: `python main.py debug` si desea ver el proceso de forma detallada.
+- `hatch run app`: Para ejecutar el servidor web.
+- `hatch run tool:format`: Para formatear el código Python.
 
-## Solución de problemas
+Probablemente desee utilizar el primer comando si solo desea ver el proyecto.
 
-Si no puede ver las imágenes asegúrese de que su instalación de Python tenga TkInter instalado, o de lo contrario, instale PyQt6.
-
-Hasta el momento ha sido desarrollado desde Linux, aún no se ha probado en Windows. _PRs_ en GitHub bienvenidos.
+## Información adicional
 
 La instalación de las dependencias requiere alrededor de **1.2GiB** de espacio disponible, además, la primera vez que ejecute el programa, descargará alrededor de **1GiB** con los datos de reconocimiento de texto.
 
