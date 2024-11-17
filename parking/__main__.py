@@ -1,9 +1,14 @@
+from gevent import monkey, sleep, spawn
+
+monkey.patch_all()
+
 import os
 import json
 import logging
 
 from os import path
 from urllib.error import URLError
+from base64 import b64encode
 
 from flask import Flask, render_template, send_file
 from flask_socketio import SocketIO
@@ -28,13 +33,25 @@ plates = []
 # Página principal.
 @app.route("/")
 def home():
+    glet = spawn(update_image)
+    glet.join()
     return render_template("home.html")
 
 
-@app.route("/live")
-def live_endpoint():
-    path = image.save_image(CAPTURE_URL, PLATES_DIR, "live.jpg")
-    return send_file(path, max_age=0)
+is_started = False
+
+
+def update_image():
+    global is_started
+    if is_started:
+        return
+    is_started = True
+    while True:
+        sleep(0.5)
+        path = image.save_image(CAPTURE_URL, PLATES_DIR, "live.jpg")
+        with open(path, "rb") as file:
+            encoded = b64encode(file.read())
+        socketio.emit("live", encoded.decode())
 
 
 # Punto de entrada para reconocimiento de placa.
