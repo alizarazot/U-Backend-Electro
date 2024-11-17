@@ -1,9 +1,11 @@
 import os
+import json
 
 from os import path
 from urllib.error import URLError
 
 from flask import Flask, render_template, send_file
+from flask_socketio import SocketIO
 
 from . import image
 from . import plate
@@ -17,6 +19,9 @@ PLATES_DIR = os.getenv("PLATES_DIR") or path.abspath(
 
 
 app = Flask(__name__)
+socketio = SocketIO(app)
+
+plates = []
 
 
 # Página principal.
@@ -34,8 +39,16 @@ def live_endpoint():
 # Punto de entrada para reconocimiento de placa.
 @app.route("/plate")
 def plate_endpoint():
-    return plate.scan(image.save_image(CAPTURE_URL, PLATES_DIR))
+    p = plate.scan(image.save_image(CAPTURE_URL, PLATES_DIR))
+    plates.append(p)
+    socketio.emit("plates", json.dumps(plates))
+    return p
+
+
+@socketio.on("connected")
+def socket_connected(data):
+    print("Connected client:", data)
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=8000)
+    socketio.run(app, host="localhost", port=8000)

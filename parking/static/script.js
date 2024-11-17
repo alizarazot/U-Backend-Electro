@@ -1,3 +1,4 @@
+// || Live camera polling.
 let camera = document.querySelector("#camera");
 setInterval((_) => {
   if (!camera.complete) {
@@ -6,6 +7,20 @@ setInterval((_) => {
 
   camera.src = camera.dataset.src + "?t=" + new Date().getTime();
 }, 512);
+
+let mainContainer = document.querySelector("main");
+let socket = io();
+socket.on("connect", (_) => {
+  socket.emit("connected", navigator.userAgent);
+});
+socket.on("plates", (plates) => {
+  console.log("Plates updated.");
+  mainContainer.innerHTML = "";
+
+  for (plate of JSON.parse(plates)) {
+    mainContainer.innerHTML += generateCard(plate, "12:45", "$5000");
+  }
+});
 
 function generateCard(plate, time, money) {
   return `
@@ -17,14 +32,9 @@ function generateCard(plate, time, money) {
     `;
 }
 
-async function getPlate() {
-  return await (await fetch("/plate")).text();
-}
-
 let btnIn = document.querySelector("#btn-in");
 let btnOut = document.querySelector("#btn-out");
-let mainContainer = document.querySelector("main");
 
-btnIn.addEventListener("click", async (_) => {
-  mainContainer.innerHTML += generateCard(await getPlate(), "12:15", "$24500");
+btnIn.addEventListener("click", (_) => {
+  fetch("/plate");
 });
