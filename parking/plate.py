@@ -10,7 +10,7 @@ import cv2 as cv
 import easyocr
 
 # Preload OCR model.
-OCR_READER = easyocr.Reader(["en"])
+OCR_READER = easyocr.Reader(["en"], gpu=False)
 
 
 def scan(img_path) -> str:
