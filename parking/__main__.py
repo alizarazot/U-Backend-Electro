@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 
 from os import path
 from urllib.error import URLError
@@ -51,4 +52,5 @@ def socket_connected(data):
 
 
 if __name__ == "__main__":
+    logging.getLogger("werkzeug").setLevel(logging.WARNING)
     socketio.run(app, host="localhost", port=8000)
