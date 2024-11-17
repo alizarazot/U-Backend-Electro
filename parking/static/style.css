@@ -5,7 +5,10 @@
   --color-surface0: hsl(223deg 16% 83%);
   --color-text: hsl(234deg 16% 35%);
   --color-teal: hsl(183deg 74% 35%);
-  --color-love: hsl(343deg 35% 55%);
+
+  /* Other colors. */
+  --color-black: hsl(0deg 0% 0%);
+  --color-white: hsl(360deg 100% 100%);
 
   /* Shades. */
   --filter-hover: brightness(85%);
@@ -37,8 +40,7 @@
 
 @font-face {
   font-family: Inter;
-  src:
-    url("Inter.ttf") format("truetype"),
+  src: url("Inter.ttf") format("truetype");
 }
 
 body {
@@ -51,7 +53,7 @@ body {
   height: 100dvh;
   margin: 0;
 
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   font-size: var(--text);
   color: var(--color-text);
 
@@ -113,10 +115,10 @@ main {
   margin: 0;
   padding: 5px;
 
-  color: black;
+  color: var(--color-black);
 
-  background-color: rgb(254 225 1);
-  border: 3px solid black;
+  background-color: hsl(60deg 100% 50%);
+  border: 3px solid var(--color-black);
 }
 
 .Card .time::before {
@@ -143,9 +145,9 @@ main {
   height: 30px;
   margin-top: var(--s1);
 
-  color: white;
+  color: var(--color-white);
 
-  background-color: black;
+  background-color: var(--color-black);
   border: none;
 }
 
