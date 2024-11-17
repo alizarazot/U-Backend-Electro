@@ -7,7 +7,7 @@ class Plate:
     COST_HOUR = 1_000
 
     def __init__(self, plate_img):
-        self.plate = ocr.scan_plate(plate_img)
+        self.plate = ocr.scan_plate(plate_img)[:7]
         self.time_in = datetime.now()
         self.time_out = None
 
