@@ -33,7 +33,7 @@ socket.on("plates", (plates) => {
     mainContainer.innerHTML += generateCard(
       plate.plate,
       `${hours}:${minutes} ${meridian}`,
-      "$5000",
+      `$${plate.price}`,
     );
   }
 });

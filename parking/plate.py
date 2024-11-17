@@ -11,6 +11,16 @@ class Plate:
         self.time_in = datetime.now()
         self.time_out = None
 
+    def get_price(self):
+        cost_second = self.COST_HOUR / 60 / 60
+
+        start = self.time_in
+        end = self.time_out
+        if end is None:
+            end = datetime.now()
+
+        return round((end - start).total_seconds() * cost_second)
+
 
 def encode_json(obj):
     if not isinstance(obj, Plate):
@@ -24,4 +34,5 @@ def encode_json(obj):
         "plate": obj.plate,
         "time_in": obj.time_in.timestamp(),
         "time_out": time_out,
+        "price": obj.get_price(),
     }

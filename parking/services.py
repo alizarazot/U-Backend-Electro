@@ -7,15 +7,15 @@ from gevent import sleep
 from . import image
 from .plate import Plate, encode_json as plate_json_encoder
 
-_is_started = False
+_is_update_live_capture_started = False
 
 
 def update_live_capture(socketio, capture_url, data_dir):
-    global _is_started
+    global _is_update_live_capture_started
 
-    if _is_started:
+    if _is_update_live_capture_started:
         return
-    _is_started = True
+    _is_update_live_capture_started = True
 
     while True:
         sleep(0.5)
@@ -25,6 +25,21 @@ def update_live_capture(socketio, capture_url, data_dir):
             encoded = b64encode(file.read())
 
         socketio.emit("live", encoded.decode())
+
+
+_is_update_plates_started = False
+
+
+def update_plates(socketio, plates):
+    global _is_update_plates_started
+
+    if _is_update_plates_started:
+        return
+    _is_update_plates_started = True
+
+    while True:
+        sleep(1)
+        socketio.emit("plates", json.dumps(plates, default=plate_json_encoder))
 
 
 def add_plate(socketio, plates, data_dir):
