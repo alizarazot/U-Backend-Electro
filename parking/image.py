@@ -6,13 +6,16 @@ import os
 from os import path
 
 
-def save_image(url, dir) -> str:
+def save_image(url, dir, name=None) -> str:
     """
     Descarga la última imagen en vivo de la cámara.
     Retorna la ruta de la imagen guardada.
     """
 
-    filepath = path.join(dir, datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg")
+    if name is None:
+        name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
+
+    filepath = path.join(dir, name)
 
     with urlopen(url) as in_stream, open(filepath, "wb") as out_file:
         copyfileobj(in_stream, out_file)

@@ -3,7 +3,7 @@ import os
 from os import path
 from urllib.error import URLError
 
-from flask import Flask, render_template
+from flask import Flask, render_template, send_file
 
 from . import image
 from . import plate
@@ -23,6 +23,12 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/live")
+def live_endpoint():
+    path = image.save_image(CAPTURE_URL, PLATES_DIR, "live.jpg")
+    return send_file(path, max_age=0)
 
 
 # Punto de entrada para reconocimiento de placa.

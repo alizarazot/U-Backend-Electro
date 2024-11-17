@@ -4,8 +4,8 @@ setInterval((_) => {
     return;
   }
 
-  camera.src = "http://192.168.0.110/capture?t=" + new Date().getTime();
-}, 250);
+  camera.src = camera.dataset.src+"?t=" + new Date().getTime();
+}, 512);
 
 function generateCard(plate, time, money) {
     return `
