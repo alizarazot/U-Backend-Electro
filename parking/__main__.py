@@ -12,8 +12,8 @@ from . import image
 from . import plate
 
 # Variables de entorno.
-# TODO: Añadirlo como plantilla en el HTML.
 CAPTURE_URL = os.getenv("CAPTURE_URL") or "http://192.168.0.110/capture"
+# TODO: Usar directorio de datos general.
 PLATES_DIR = os.getenv("PLATES_DIR") or path.abspath(
     path.join(path.dirname(__file__), "data", "plates")
 )

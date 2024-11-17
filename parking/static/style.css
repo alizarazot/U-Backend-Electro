@@ -92,9 +92,11 @@ body {
 }
 
 main {
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: var(--s2);
+
   padding: var(--s2);
 }
 
