@@ -5,8 +5,8 @@ from urllib.error import URLError
 
 from flask import Flask, send_file, send_from_directory
 
-from parking import image
-from parking import plate
+from . import image
+from . import plate
 
 # Variables de entorno.
 # TODO: Añadirlo como plantilla en el HTML.
@@ -22,7 +22,7 @@ app = Flask(__name__)
 # Página principal.
 @app.route("/")
 def home():
-    return send_file("frontend/index.html")
+    return send_file("../frontend/index.html")
 
 
 # Punto de entrada para reconocimiento de placa.
@@ -34,13 +34,18 @@ def plate_endpoint():
 # Recursos estáticos.
 @app.route("/static/<path:path>")
 def static_files(path):
-    return send_file(path.join("frontend/assets", path))
+    return send_file(path.join("../frontend/assets", path))
+
 
 @app.route("/style.css")
 def static_style():
-    return send_file("frontend/style.css")
+    return send_file("../frontend/style.css")
 
 
 @app.route("/script.js")
 def static_script():
-    return send_file("frontend/script.js")
+    return send_file("../frontend/script.js")
+
+
+if __name__ == "__main__":
+    app.run(host="localhost", port=8000)

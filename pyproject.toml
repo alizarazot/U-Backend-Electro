@@ -1,0 +1,41 @@
+[build-system]
+build-backend = 'hatchling.build'
+requires = ['hatchling']
+
+[project]
+classifiers = ['Development Status :: 4 - Beta', 'Programming Language :: Python', 'Programming Language :: Python :: 3.12', 'Programming Language :: Python :: Implementation :: CPython']
+description = 'Sistema de parqueadero automatizado.'
+dynamic = ['version']
+keywords = []
+license = 'ISC'
+name = 'Parking'
+readme = 'README.md'
+
+[[project.authors]]
+email = 'alizarazot@ufpso.edu.co'
+name = 'alizarazot'
+
+[project.urls]
+Documentation = 'https://github.com/alizarazot/Parking#readme'
+Issues = 'https://github.com/alizarazot/Parking/issues'
+Source = 'https://github.com/alizarazot/Parking'
+
+[tool]
+[tool.hatch]
+[tool.hatch.envs]
+[tool.hatch.envs.default]
+dependencies = ['flask', 'opencv-python', 'easyocr']
+python = '3.12'
+
+[tool.hatch.envs.default.scripts]
+app = 'python -m parking'
+
+[tool.hatch.envs.tool]
+dependencies = ['black']
+detached = true
+
+[tool.hatch.envs.tool.scripts]
+format = 'black parking'
+
+[tool.hatch.version]
+path = 'parking/__about__.py'

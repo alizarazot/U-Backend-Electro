@@ -7,7 +7,6 @@ El proceso de reconocimiento de placas requiere de los siguientes pasos:
 
 import cv2 as cv
 
-import imutils
 import easyocr
 
 # Preload OCR model.
