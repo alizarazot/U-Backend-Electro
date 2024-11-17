@@ -10,7 +10,7 @@ from .plate import Plate, encode_json as plate_json_encoder
 _is_update_live_capture_started = False
 
 
-def update_live_capture(socketio, capture_url, data_dir):
+def update_live_capture(socketio, poll_time, capture_url, data_dir):
     global _is_update_live_capture_started
 
     if _is_update_live_capture_started:
@@ -18,7 +18,7 @@ def update_live_capture(socketio, capture_url, data_dir):
     _is_update_live_capture_started = True
 
     while True:
-        sleep(0.5)
+        sleep(poll_time)
 
         path = image.download(capture_url, data_dir, "live.jpg")
         with open(path, "rb") as file:

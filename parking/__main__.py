@@ -48,7 +48,11 @@ data_plates = []
 # Página principal.
 @app.route("/")
 def route_home():
-    spawn(lambda: services.update_live_capture(socketio, CAPTURE_URL, DATA_DIR)).join()
+    spawn(
+        lambda: services.update_live_capture(
+            socketio, CAPTURE_WAIT, CAPTURE_URL, DATA_DIR
+        )
+    ).join()
     spawn(lambda: services.update_plates(socketio, data_plates)).join()
     return render_template("home.html")
 
