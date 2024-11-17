@@ -1,3 +1,7 @@
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 from gevent import monkey, sleep, spawn
 
 monkey.patch_all()

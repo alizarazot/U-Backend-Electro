@@ -10,7 +10,7 @@ import cv2 as cv
 import easyocr
 
 # Preload OCR model.
-OCR_READER = easyocr.Reader(["es"])
+OCR_READER = easyocr.Reader(["en"])
 
 
 def scan(img_path) -> str:
@@ -21,7 +21,12 @@ def scan(img_path) -> str:
     """
 
     image = cv.imread(img_path)
-    plate = OCR_READER.readtext(image, detail=0)
+    plate = OCR_READER.readtext(
+        image,
+        detail=0,
+        batch_size=10000,
+        allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
+    )
 
     plate_text = ""
     if len(plate) != 0:
