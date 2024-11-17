@@ -13,6 +13,7 @@ env/
 
 # Data.
 data/
+parking-data/
 
 # Bun files.
 bun.lockb

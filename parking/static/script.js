@@ -14,8 +14,27 @@ socket.on("connect", (_) => {
 socket.on("plates", (plates) => {
   mainContainer.innerHTML = "";
 
-  for (plate of JSON.parse(plates)) {
-    mainContainer.innerHTML += generateCard(plate, "12:45", "$5000");
+  for (let plate of JSON.parse(plates)) {
+    let date = new Date(plate.time_in * 1000);
+    let meridian = "A.M.";
+    let hours = date.getHours();
+    if (hours > 12) {
+      hours -= 12;
+      meridian = "P.M.";
+    }
+    if (hours < 10) {
+      hours = "0" + hours.toString();
+    }
+    let minutes = date.getMinutes();
+    if (minutes < 10) {
+      minutes = "0" + minutes.toString();
+    }
+
+    mainContainer.innerHTML += generateCard(
+      plate.plate,
+      `${hours}:${minutes} ${meridian}`,
+      "$5000",
+    );
   }
 });
 

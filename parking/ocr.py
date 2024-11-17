@@ -13,7 +13,7 @@ import easyocr
 ocr_reader = easyocr.Reader(["en"], gpu=False)
 
 
-def scan(img_path) -> str:
+def scan_plate(img_path) -> str:
     """
     Escanea una imagen y devuelve la placa.
 

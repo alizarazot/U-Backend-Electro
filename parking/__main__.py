@@ -42,19 +42,27 @@ DATA_DIR = os.getenv("DATA_DIR") or path.abspath(
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-# TODO: Crear clase propia.
-plates = []
+data_plates = []
 
 
 # Página principal.
 @app.route("/")
 def route_home():
-    spawn(
-        lambda: services.update_live_capture(
-            socketio, CAPTURE_URL, path.join(DATA_DIR, "plates")
-        )
-    ).join()
+    spawn(lambda: services.update_live_capture(socketio, CAPTURE_URL, DATA_DIR)).join()
     return render_template("home.html")
+
+
+@app.route("/_/car/in")
+def route_notify_car_in():
+    socketio.emit("car-in")
+    spawn(services.add_plate(socketio, data_plates, DATA_DIR)).join()
+    return "Adding car..."
+
+
+@app.route("/_/car/out")
+def route_notify_car_out():
+    socketio.emit("car-out")
+    return "Removing car..."
 
 
 # Eventos de Socket.IO
