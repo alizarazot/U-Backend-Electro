@@ -5,7 +5,10 @@
 
     <title>Parqueadero</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
     <script defer src="{{ url_for('static', filename='script.js') }}"></script>
   </head>
 
@@ -16,7 +19,12 @@
       </header>
       <div class="container">
         <h2>Cámara</h2>
-        <img id="camera" class="Camera" src="{{ url_for('live_endpoint') }}" data-src="{{ url_for('live_endpoint') }}"/>
+        <img
+          id="camera"
+          class="Camera"
+          src="{{ url_for('live_endpoint') }}"
+          data-src="{{ url_for('live_endpoint') }}"
+        />
 
         <div class="_btns">
           <button id="btn-in">Entrando</button>
@@ -25,9 +33,7 @@
       </div>
     </nav>
 
-    <main>
-
-    </main>
+    <main></main>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
       <symbol viewBox="0 0 24 24" id="close-o">

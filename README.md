@@ -1,4 +1,3 @@
-
 # Parking (Parqueadero)
 
 > **Advertencia:** Trabajo en progreso.
