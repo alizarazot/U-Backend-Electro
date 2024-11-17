@@ -35,7 +35,9 @@ dependencies = ['black']
 detached = true
 
 [tool.hatch.envs.tool.scripts]
+all = ['web', 'format']
 format = 'black parking'
+web = ['bun run lint', 'bun run format']
 
 [tool.hatch.version]
 path = 'parking/__about__.py'

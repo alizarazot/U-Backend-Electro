@@ -3,7 +3,7 @@ import os
 from os import path
 from urllib.error import URLError
 
-from flask import Flask, send_file, send_from_directory
+from flask import Flask, render_template
 
 from . import image
 from . import plate
@@ -22,29 +22,13 @@ app = Flask(__name__)
 # Página principal.
 @app.route("/")
 def home():
-    return send_file("../frontend/index.html")
+    return render_template("home.html")
 
 
 # Punto de entrada para reconocimiento de placa.
 @app.route("/plate")
 def plate_endpoint():
     return plate.scan(image.save_image(CAPTURE_URL, PLATES_DIR))
-
-
-# Recursos estáticos.
-@app.route("/static/<path:path>")
-def static_files(path):
-    return send_file(path.join("../frontend/assets", path))
-
-
-@app.route("/style.css")
-def static_style():
-    return send_file("../frontend/style.css")
-
-
-@app.route("/script.js")
-def static_script():
-    return send_file("../frontend/script.js")
 
 
 if __name__ == "__main__":

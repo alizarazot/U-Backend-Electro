@@ -13,3 +13,7 @@ env/
 
 # Data.
 data/
+
+# Bun files.
+bun.lockb
+node_modules/
