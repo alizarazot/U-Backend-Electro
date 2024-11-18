@@ -160,7 +160,7 @@ main {
   font-weight: bold;
 }
 
-.Card button.pdf {
+.Card a.pdf {
   cursor: pointer;
 
   height: 100%;
@@ -169,12 +169,13 @@ main {
   font-size: var(--text);
   font-weight: bold;
   color: var(--color-base);
+  text-decoration: none;
 
   background-color: var(--color-red);
   border: none;
   border-radius: var(--s1);
 }
 
-.Card button.pdf:hover {
+.Card a.pdf:hover {
   text-decoration: underline;
 }

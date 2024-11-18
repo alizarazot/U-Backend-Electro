@@ -31,6 +31,7 @@ socket.on("plates", (plates) => {
       plate.plate,
       formatTime(new Date(plate.time_in * 1000)),
       `$${plate.price}`,
+      plate.pdf,
     );
   }
 });
@@ -71,12 +72,12 @@ function generateActiveCard(plate, time, money) {
     `;
 }
 
-function generateInactiveCard(plate, time, money) {
+function generateInactiveCard(plate, time, money, pdf) {
   return `
     <div class="Card">
       <h3 class="plate">${plate}</h3>
       <span class="money">${money}</span>
-      <button class="pdf"> PDF </button>
+      <a class="pdf" href="pdf/${pdf}" target="_blank"> PDF </a>
     </div>
     `;
 }

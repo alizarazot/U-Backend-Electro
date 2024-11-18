@@ -63,6 +63,11 @@ def route_home():
     return render_template("home.html")
 
 
+@app.route("/pdf/<pdf>")
+def route_pdf(pdf):
+    return send_file(path.join(DATA_DIR, "pdf", path.basename(pdf)))
+
+
 @app.route("/_/car/in")
 def route_notify_car_in():
     socketio.emit("car-in-start", ignore_queue=True)
