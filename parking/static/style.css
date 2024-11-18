@@ -91,6 +91,16 @@ body {
   border-radius: var(--s1);
 }
 
+.Camera-Container #plate-status {
+  display: block;
+  padding: var(--s1);
+  text-align: center;
+}
+
+.Camera-Container #plate-status.hidden {
+  color: transparent;
+}
+
 main {
   overflow-y: auto;
   display: flex;

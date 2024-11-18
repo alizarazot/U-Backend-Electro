@@ -60,16 +60,18 @@ def route_home():
 
 @app.route("/_/car/in")
 def route_notify_car_in():
-    socketio.emit("car-in-start")
+    socketio.emit("car-in-start", ignore_queue=True)
+    socketio.sleep(0)
     data_plates.append(Plate(path.join(DATA_DIR, "live.jpg")))
-    socketio.emit("car-in-end")
+    socketio.emit("car-in-end", data_plates[-1].plate)
 
     return "Added: " + data_plates[-1].plate
 
 
 @app.route("/_/car/out")
 def route_notify_car_out():
-    socketio.emit("car-out-start")
+    socketio.emit("car-out-start", ignore_queue=True)
+    socketio.sleep(0)
 
     target = Plate(path.join(DATA_DIR, "live.jpg")).plate
     for i, plate in enumerate(data_plates):
@@ -77,7 +79,7 @@ def route_notify_car_out():
             data_plates.pop(i)
             break
 
-    socketio.emit("car-out-end")
+    socketio.emit("car-out-end", target)
 
     return "Removed: " + target
 

@@ -2,6 +2,7 @@
 
 // Selectores.
 let imgCamera = document.querySelector("#camera");
+let spanPlateStatus = document.querySelector("#plate-status");
 let mainContainer = document.querySelector("main");
 
 // Configurar WebSockets.
@@ -40,6 +41,28 @@ socket.on("plates", (plates) => {
 
 socket.on("live", (b64) => {
   imgCamera.src = "data:image/png;base64," + b64;
+});
+
+socket.on("car-in-start", (_) => {
+  spanPlateStatus.innerText = "Carro detectado en la entrada, leyendo placa...";
+  spanPlateStatus.classList.toggle("hidden", false);
+});
+
+socket.on("car-in-end", (plate) => {
+  spanPlateStatus.innerText = "Placa añadida: " + plate;
+  spanPlateStatus.classList.toggle("hidden", false);
+  setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
+});
+
+socket.on("car-out-start", (_) => {
+  spanPlateStatus.innerText = "Carro detectado en la salida, leyendo placa...";
+  spanPlateStatus.classList.toggle("hidden", false);
+});
+
+socket.on("car-out-end", (plate) => {
+  spanPlateStatus.innerText = "Placa eliminada: " + plate;
+  spanPlateStatus.classList.toggle("hidden", false);
+  setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
 });
 
 function generateCard(plate, time, money) {
