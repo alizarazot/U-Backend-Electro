@@ -43,7 +43,8 @@ DATA_DIR = os.getenv("DATA_DIR") or path.abspath(
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-data_plates = []
+data_active_plates = []
+data_inactive_plates = []
 
 
 # Página principal.
@@ -54,7 +55,11 @@ def route_home():
             socketio, CAPTURE_WAIT, CAPTURE_URL, DATA_DIR
         )
     ).join()
-    spawn(lambda: services.update_plates(socketio, data_plates)).join()
+    spawn(
+        lambda: services.update_plates(
+            socketio, data_active_plates, data_inactive_plates
+        )
+    ).join()
     return render_template("home.html")
 
 
@@ -62,10 +67,11 @@ def route_home():
 def route_notify_car_in():
     socketio.emit("car-in-start", ignore_queue=True)
     socketio.sleep(0)
-    data_plates.append(Plate(path.join(DATA_DIR, "live.jpg")))
-    socketio.emit("car-in-end", data_plates[-1].plate)
 
-    return "Added: " + data_plates[-1].plate
+    data_active_plates.append(Plate(path.join(DATA_DIR, "live.jpg")))
+    socketio.emit("car-in-end", data_active_plates[-1].plate)
+
+    return "Added: " + data_active_plates[-1].plate
 
 
 @app.route("/_/car/out")
@@ -74,9 +80,11 @@ def route_notify_car_out():
     socketio.sleep(0)
 
     target = Plate(path.join(DATA_DIR, "live.jpg")).plate
-    for i, plate in enumerate(data_plates):
+    for i, plate in enumerate(data_active_plates):
         if plate.plate == target:
-            data_plates.pop(i)
+            data_active_plates.pop(i)
+            plate.end_parking()
+            data_inactive_plates.append(plate)
             break
 
     socketio.emit("car-out-end", target)

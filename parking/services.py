@@ -30,7 +30,7 @@ def update_live_capture(socketio, poll_time, capture_url, data_dir):
 _is_update_plates_started = False
 
 
-def update_plates(socketio, plates):
+def update_plates(socketio, active_plates, inactive_plates):
     global _is_update_plates_started
 
     if _is_update_plates_started:
@@ -39,4 +39,10 @@ def update_plates(socketio, plates):
 
     while True:
         sleep(1)
-        socketio.emit("plates", json.dumps(plates, default=plate_json_encoder))
+        socketio.emit(
+            "plates",
+            json.dumps(
+                {"active": active_plates, "inactive": inactive_plates},
+                default=plate_json_encoder,
+            ),
+        )

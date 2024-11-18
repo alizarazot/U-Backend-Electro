@@ -110,6 +110,22 @@ main {
   padding: var(--s2);
 }
 
+.Plates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.Separator {
+  flex-shrink: 0;
+
+  width: 100%;
+  height: var(--s1);
+
+  background-color: var(--color-teal);
+  border-radius: var(--s1);
+}
+
 .Card {
   display: flex;
   align-items: center;

@@ -3,7 +3,8 @@
 // Selectores.
 let imgCamera = document.querySelector("#camera");
 let spanPlateStatus = document.querySelector("#plate-status");
-let mainContainer = document.querySelector("main");
+let divActivePlates = document.querySelector("#active-plates");
+let divInactivePlates = document.querySelector("#inactive-plates");
 
 // Configurar WebSockets.
 let socket = io();
@@ -13,30 +14,9 @@ socket.on("connect", (_) => {
 });
 
 socket.on("plates", (plates) => {
-  mainContainer.innerHTML = "";
-
-  for (let plate of JSON.parse(plates)) {
-    let date = new Date(plate.time_in * 1000);
-    let meridian = "A.M.";
-    let hours = date.getHours();
-    if (hours > 12) {
-      hours -= 12;
-      meridian = "P.M.";
-    }
-    if (hours < 10) {
-      hours = "0" + hours.toString();
-    }
-    let minutes = date.getMinutes();
-    if (minutes < 10) {
-      minutes = "0" + minutes.toString();
-    }
-
-    mainContainer.innerHTML += generateCard(
-      plate.plate,
-      `${hours}:${minutes} ${meridian}`,
-      `$${plate.price}`,
-    );
-  }
+  plates = JSON.parse(plates);
+  appendCards(divActivePlates, plates.active);
+  appendCards(divInactivePlates, plates.inactive);
 });
 
 socket.on("live", (b64) => {
@@ -64,6 +44,33 @@ socket.on("car-out-end", (plate) => {
   spanPlateStatus.classList.toggle("hidden", false);
   setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
 });
+
+function appendCards(element, plates) {
+  element.innerHTML = "";
+
+  for (let plate of plates) {
+    let date = new Date(plate.time_in * 1000);
+    let meridian = "A.M.";
+    let hours = date.getHours();
+    if (hours > 12) {
+      hours -= 12;
+      meridian = "P.M.";
+    }
+    if (hours < 10) {
+      hours = "0" + hours.toString();
+    }
+    let minutes = date.getMinutes();
+    if (minutes < 10) {
+      minutes = "0" + minutes.toString();
+    }
+
+    element.innerHTML += generateCard(
+      plate.plate,
+      `${hours}:${minutes} ${meridian}`,
+      `$${plate.price}`,
+    );
+  }
+}
 
 function generateCard(plate, time, money) {
   return `

@@ -21,6 +21,9 @@ class Plate:
 
         return round((end - start).total_seconds() * cost_second)
 
+    def end_parking(self):
+        self.time_out = datetime.now()
+
 
 def encode_json(obj):
     if not isinstance(obj, Plate):
