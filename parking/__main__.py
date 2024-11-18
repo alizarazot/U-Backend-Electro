@@ -84,6 +84,17 @@ def route_notify_car_out():
         if plate.plate == target:
             data_active_plates.pop(i)
             plate.end_parking()
+            plate.render_pdf(
+                render_template(
+                    "pdf.html",
+                    plate=plate.plate,
+                    time_in=plate.time_in,
+                    time_out=plate.time_out,
+                    total_time=plate.time_out - plate.time_in,
+                    price=plate.get_price(),
+                ),
+                DATA_DIR,
+            )
             data_inactive_plates.append(plate)
             break
 

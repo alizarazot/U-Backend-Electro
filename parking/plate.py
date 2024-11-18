@@ -1,4 +1,8 @@
 from datetime import datetime
+from os import path
+import os
+
+import pdfkit
 
 from . import ocr
 
@@ -10,6 +14,7 @@ class Plate:
         self.plate = ocr.scan_plate(plate_img)[:7]
         self.time_in = datetime.now()
         self.time_out = None
+        self.pdf = None
 
     def get_price(self):
         cost_second = self.COST_HOUR / 60 / 60
@@ -23,6 +28,15 @@ class Plate:
 
     def end_parking(self):
         self.time_out = datetime.now()
+
+    def render_pdf(self, html, data_dir):
+        self.pdf = (
+            f"{int(self.time_in.timestamp()*1000)}-{self.plate.replace(' ', '-')}.pdf"
+        )
+
+        filepath = path.join(data_dir, "pdf", self.pdf)
+        os.makedirs(path.dirname(filepath), exist_ok=True)
+        pdfkit.from_string(html, filepath)
 
 
 def encode_json(obj):
@@ -38,4 +52,5 @@ def encode_json(obj):
         "time_in": obj.time_in.timestamp(),
         "time_out": time_out,
         "price": obj.get_price(),
+        "pdf": obj.pdf,
     }
