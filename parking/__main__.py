@@ -23,6 +23,7 @@ from flask import Flask, render_template, send_file
 from flask_socketio import SocketIO
 
 from . import services
+from .plate import Plate
 
 # Variables de entorno.
 
@@ -59,15 +60,26 @@ def route_home():
 
 @app.route("/_/car/in")
 def route_notify_car_in():
-    socketio.emit("car-in")
-    spawn(services.add_plate(socketio, data_plates, DATA_DIR)).join()
-    return "Adding car..."
+    socketio.emit("car-in-start")
+    data_plates.append(Plate(path.join(DATA_DIR, "live.jpg")))
+    socketio.emit("car-in-end")
+
+    return "Added: " + data_plates[-1].plate
 
 
 @app.route("/_/car/out")
 def route_notify_car_out():
-    socketio.emit("car-out")
-    return "Removing car..."
+    socketio.emit("car-out-start")
+
+    target = Plate(path.join(DATA_DIR, "live.jpg")).plate
+    for i, plate in enumerate(data_plates):
+        if plate.plate == target:
+            data_plates.pop(i)
+            break
+
+    socketio.emit("car-out-end")
+
+    return "Removed: " + target
 
 
 # Eventos de Socket.IO

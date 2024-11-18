@@ -40,9 +40,3 @@ def update_plates(socketio, plates):
     while True:
         sleep(1)
         socketio.emit("plates", json.dumps(plates, default=plate_json_encoder))
-
-
-def add_plate(socketio, plates, data_dir):
-    plates.append(Plate(path.join(data_dir, "live.jpg")))
-    socketio.emit("plates", json.dumps(plates, default=plate_json_encoder))
-    print("Saved plate:", plates[-1].plate)
