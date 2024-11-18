@@ -134,7 +134,7 @@ main {
 }
 
 .Card .time::before {
-  content: "Tiempo: ";
+  content: "Entrada: ";
   font-weight: bold;
 }
 

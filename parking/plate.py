@@ -4,7 +4,7 @@ from . import ocr
 
 
 class Plate:
-    COST_HOUR = 1_000
+    COST_HOUR = 7_000
 
     def __init__(self, plate_img):
         self.plate = ocr.scan_plate(plate_img)[:7]
