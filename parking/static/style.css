@@ -5,6 +5,7 @@
   --color-surface0: hsl(223deg 16% 83%);
   --color-text: hsl(234deg 16% 35%);
   --color-teal: hsl(183deg 74% 35%);
+  --color-red: hsl(347deg 87% 44%);
 
   /* Other colors. */
   --color-black: hsl(0deg 0% 0%);
@@ -157,4 +158,23 @@ main {
 .Card .money::before {
   content: "Cobro: ";
   font-weight: bold;
+}
+
+.Card button.pdf {
+  cursor: pointer;
+
+  height: 100%;
+  padding: var(--s1) var(--s2);
+
+  font-size: var(--text);
+  font-weight: bold;
+  color: var(--color-base);
+
+  background-color: var(--color-red);
+  border: none;
+  border-radius: var(--s1);
+}
+
+.Card button.pdf:hover {
+  text-decoration: underline;
 }

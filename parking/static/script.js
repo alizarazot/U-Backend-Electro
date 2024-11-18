@@ -15,8 +15,24 @@ socket.on("connect", (_) => {
 
 socket.on("plates", (plates) => {
   plates = JSON.parse(plates);
-  appendCards(divActivePlates, plates.active);
-  appendCards(divInactivePlates, plates.inactive);
+
+  divActivePlates.innerHTML = "";
+  for (let plate of plates.active) {
+    divActivePlates.innerHTML += generateActiveCard(
+      plate.plate,
+      formatTime(new Date(plate.time_in * 1000)),
+      `$${plate.price}`,
+    );
+  }
+
+  divInactivePlates.innerHTML = "";
+  for (let plate of plates.inactive) {
+    divInactivePlates.innerHTML += generateInactiveCard(
+      plate.plate,
+      formatTime(new Date(plate.time_in * 1000)),
+      `$${plate.price}`,
+    );
+  }
 });
 
 socket.on("live", (b64) => {
@@ -45,34 +61,7 @@ socket.on("car-out-end", (plate) => {
   setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
 });
 
-function appendCards(element, plates) {
-  element.innerHTML = "";
-
-  for (let plate of plates) {
-    let date = new Date(plate.time_in * 1000);
-    let meridian = "A.M.";
-    let hours = date.getHours();
-    if (hours > 12) {
-      hours -= 12;
-      meridian = "P.M.";
-    }
-    if (hours < 10) {
-      hours = "0" + hours.toString();
-    }
-    let minutes = date.getMinutes();
-    if (minutes < 10) {
-      minutes = "0" + minutes.toString();
-    }
-
-    element.innerHTML += generateCard(
-      plate.plate,
-      `${hours}:${minutes} ${meridian}`,
-      `$${plate.price}`,
-    );
-  }
-}
-
-function generateCard(plate, time, money) {
+function generateActiveCard(plate, time, money) {
   return `
     <div class="Card">
       <h3 class="plate">${plate}</h3>
@@ -80,4 +69,32 @@ function generateCard(plate, time, money) {
       <span class="money">${money}</span>
     </div>
     `;
+}
+
+function generateInactiveCard(plate, time, money) {
+  return `
+    <div class="Card">
+      <h3 class="plate">${plate}</h3>
+      <span class="money">${money}</span>
+      <button class="pdf"> PDF </button>
+    </div>
+    `;
+}
+
+function formatTime(date) {
+  let meridian = "A.M.";
+  let hours = date.getHours();
+  if (hours > 12) {
+    hours -= 12;
+    meridian = "P.M.";
+  }
+  if (hours < 10) {
+    hours = "0" + hours.toString();
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = "0" + minutes.toString();
+  }
+
+  return `${hours}:${minutes} ${meridian}`;
 }
