@@ -18,6 +18,7 @@ import logging
 
 from os import path
 from urllib.error import URLError
+from datetime import datetime
 
 from flask import Flask, render_template, send_file
 from flask_socketio import SocketIO
@@ -89,14 +90,20 @@ def route_notify_car_out():
         if plate.plate == target:
             data_active_plates.pop(i)
             plate.end_parking()
+
+            elapsed_time = plate.time_out - plate.time_in
+            formatted_elapsed = f"{elapsed_time.seconds // 3600} horas, {(elapsed_time.seconds % 3600) // 60} minutos, {elapsed_time.seconds % 60} segundos"
+
             plate.render_pdf(
                 render_template(
                     "pdf.html",
                     plate=plate.plate,
-                    time_in=plate.time_in,
-                    time_out=plate.time_out,
-                    total_time=plate.time_out - plate.time_in,
-                    price=plate.get_price(),
+                    date=datetime.now().strftime("%Y/%m/%d"),
+                    time_in=plate.time_in.strftime("%I:%M %p"),
+                    time_out=plate.time_out.strftime("%I:%M %p"),
+                    total_time=formatted_elapsed,
+                    total_price=plate.get_price(),
+                    cost_hour=plate.COST_HOUR,
                 ),
                 DATA_DIR,
             )

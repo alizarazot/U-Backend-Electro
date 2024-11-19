@@ -1,24 +1,113 @@
 <!doctype html>
 <html lang="es-CO">
   <head>
-    <meta charset="utf-8" />
-    <title>Factura</title>
-<style>
-   * {
-      background-color: #fff;
-      color: #000;
-   }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factura Parqueadero</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+      }
+      .container {
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+        border-radius: 8px;
+        padding: 20px;
+      }
+      .header {
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+      }
+      .header p {
+        margin: 0;
+        font-size: 14px;
+        color: #777;
+      }
+      .details {
+        margin-bottom: 20px;
+      }
+      .details p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #555;
+      }
+      .details span {
+        font-weight: bold;
+        color: #333;
+      }
+      .plate {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 50px;
+        margin: 10px auto;
+        background-color: #f7e300;
+        color: #000;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        border: 3px solid #000;
+      }
+      .pricing {
+        margin-bottom: 20px;
+      }
+      .pricing p {
+        font-size: 14px;
+        color: #555;
+      }
+      .pricing span {
+        font-weight: bold;
+        color: #333;
+      }
+      .total_price {
+        text-decoration: underline;
+        font-weight: bolder;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #aaa;
+        border-top: 2px solid #ddd;
+        padding-top: 10px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Factura de venta</h1>
-    <p>Cobro por servicio de parqueadero.</p>
-    <br />
-    <h2>Placa: {{ plate }}</h2>
-    <p>Hora de entrada: {{ time_in }}</p>
-    <p>Hora de salida: {{ time_out }}</p>
-    <p>Tiempo total: {{ total_time }}</p>
-    <br />
-    <h1>Valor a pagar: ${{ price }}</h1>
+    <div class="container">
+      <div class="header">
+        <h1>Parqueadero</h1>
+        <p>Ocaña, Norte de Santander</p>
+      </div>
+      <div class="details">
+        <p><span>Fecha:</span> {{ date }}</p>
+        <p><span>Placa del vehículo:</span></p>
+        <div class="plate">{{ plate }}</div>
+      </div>
+      <div class="pricing">
+        <p><span>Hora de entrada: </span>{{ time_in }}</p>
+        <p><span>Hora de salida: </span>{{ time_out }}</p>
+        <p><span>Tiempo total: </span>{{ total_time }}</p>
+        <p><span>Precio por hora: </span>${{ cost_hour }}</p>
+        <p>
+          <span>Precio total: </span>
+          <span class="total_price">${{ total_price }}</span>
+        </p>
+      </div>
+      <div class="footer">
+        <p>Gracias por su preferencia. ¡Vuelva pronto!</p>
+      </div>
+    </div>
   </body>
 </html>
