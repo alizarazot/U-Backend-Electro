@@ -6,14 +6,20 @@ int ECHO_1 = 11;
 int TRIGGER_2 = 9;
 int ECHO_2 = 8;
 
-Servo servo;
+int SERVO_1 = 2;
+int SERVO_2 = 3;
+
+Servo servo1;
+Servo servo2;
 
 void setup() {
   Serial.begin(9600);
   
   Serial.println("Iniciando placa...");
 
-  servo.attach(2);
+  servo1.attach(SERVO_1);
+  servo2.attach(SERVO_2);
+
   pinMode(LED_BUILTIN, OUTPUT);
 
   pinMode(TRIGGER_1, OUTPUT);
@@ -37,17 +43,17 @@ void loop() {
   
   if (distance1 < 10 || distance2 < 10) {
     Serial.println("Objeto cerca de la placa.");
+    servo1.write(90);
     digitalWrite(LED_BUILTIN, HIGH);
-    servo.write(90);
-    delay(500);
-    servo.write(0);
+    servo2.write(90);
   } else {
     Serial.println("Objeto lejos de la placa.");
+    servo1.write(0);
     digitalWrite(LED_BUILTIN, LOW);
-    servo.write(180);
+    servo2.write(180);
   }
   
-  delay(1500);
+  delay(2000);
 }
 
 // Retorna la distancia en centímetros.
