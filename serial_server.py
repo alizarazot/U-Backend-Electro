@@ -40,7 +40,7 @@ while True:
 
         write("SERVO2")
         write("VERTICAL")
-        sleep(2)
+        sleep(3)
 
         status =url_get("http://localhost:8000/_/car/out").decode() 
 
@@ -68,7 +68,7 @@ while True:
 
         write("SERVO1")
         write("VERTICAL")
-        sleep(2)
+        sleep(3)
 
         status =url_get("http://localhost:8000/_/car/in").decode() 
 
