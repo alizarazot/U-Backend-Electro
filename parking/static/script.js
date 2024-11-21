@@ -61,7 +61,11 @@ socket.on("car-out-start", (_) => {
 });
 
 socket.on("car-out-end", (plate) => {
-  spanPlateStatus.innerText = "Placa eliminada: " + plate;
+  if (plate == undefined) {
+    spanPlateStatus.innerText = "Placa no detectada";
+  } else {
+    spanPlateStatus.innerText = "Placa eliminada: " + plate;
+  }
   spanPlateStatus.classList.toggle("hidden", false);
   setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
 });

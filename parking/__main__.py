@@ -117,9 +117,11 @@ def route_notify_car_out():
             )
             data_inactive_plates.append(plate)
             break
+    else:
+        socketio.emit("car-out-end", None)
+        return "FAIL"
 
     socketio.emit("car-out-end", target)
-
     return "OK"
 
 

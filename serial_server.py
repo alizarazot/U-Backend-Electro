@@ -27,6 +27,8 @@ while read() != "READY":
     sleep(1)
 
 while True:
+    sleep(0.5)
+
     write("DISTANCE")
 
     d1 = int(read());
