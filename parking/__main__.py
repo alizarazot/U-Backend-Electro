@@ -79,12 +79,12 @@ def route_notify_car_in():
     plate = Plate(path)
     if plate.plate.strip() == "":
         socketio.emit("car-in-end", None)
-        return "Text not found!"
+        return "FAIL"
 
     data_active_plates.append(plate)
     socketio.emit("car-in-end", data_active_plates[-1].plate)
 
-    return "Added: " + data_active_plates[-1].plate
+    return "OK"
 
 
 @app.route("/_/car/out")
@@ -120,7 +120,7 @@ def route_notify_car_out():
 
     socketio.emit("car-out-end", target)
 
-    return "Removed: " + target
+    return "OK"
 
 
 # Eventos de Socket.IO
