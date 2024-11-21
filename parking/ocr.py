@@ -23,10 +23,6 @@ def scan_plate(img_path, rotate=False) -> str:
     """
 
     image = cv.imread(img_path)
-    while image is None:
-        sleep(0)
-        image = cv.imread(img_path)
-        print("Image was None.")
     
     if rotate:
         image = imutils.rotate_bound(image, 180)

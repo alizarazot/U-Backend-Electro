@@ -25,6 +25,7 @@ from flask_socketio import SocketIO
 
 from . import services
 from .plate import Plate
+from . import image
 
 # Variables de entorno.
 
@@ -74,7 +75,8 @@ def route_notify_car_in():
     socketio.emit("car-in-start", ignore_queue=True)
     socketio.sleep(0)
 
-    plate = Plate(path.join(DATA_DIR, "live.jpg"))
+    path = image.download(CAPTURE_URL, DATA_DIR, "capture.jpg")
+    plate = Plate(path)
     if plate.plate.strip() == "":
         socketio.emit("car-in-end", None)
         return "Text not found!"
@@ -90,7 +92,8 @@ def route_notify_car_out():
     socketio.emit("car-out-start", ignore_queue=True)
     socketio.sleep(0)
 
-    target = Plate(path.join(DATA_DIR, "live.jpg"), rotate=True).plate
+    path = image.download(CAPTURE_URL, DATA_DIR, "capture.jpg")
+    target = Plate(path, rotate=True).plate
     for i, plate in enumerate(data_active_plates):
         if plate.plate == target:
             data_active_plates.pop(i)
