@@ -80,7 +80,7 @@ def route_notify_car_in():
     if plate.plate.strip() == "":
         socketio.emit("car-in-end", None)
         return "Text not found!"
-    
+
     data_active_plates.append(plate)
     socketio.emit("car-in-end", data_active_plates[-1].plate)
 

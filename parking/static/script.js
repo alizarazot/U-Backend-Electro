@@ -47,9 +47,9 @@ socket.on("car-in-start", (_) => {
 
 socket.on("car-in-end", (plate) => {
   if (plate == undefined) {
-    spanPlateStatus.innerText = "Placa no detectada"
+    spanPlateStatus.innerText = "Placa no detectada";
   } else {
-  spanPlateStatus.innerText = "Placa añadida: " + plate;
+    spanPlateStatus.innerText = "Placa añadida: " + plate;
   }
   spanPlateStatus.classList.toggle("hidden", false);
   setTimeout((_) => spanPlateStatus.classList.toggle("hidden", true), 5000);
