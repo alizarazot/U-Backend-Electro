@@ -7,12 +7,15 @@ El proceso de reconocimiento de placas requiere de los siguientes pasos:
 
 import cv2 as cv
 import easyocr
+import imutils
+
+from gevent import sleep
 
 # Preload OCR model.
 ocr_reader = easyocr.Reader(["en"], gpu=False)
 
 
-def scan_plate(img_path) -> str:
+def scan_plate(img_path, rotate=False) -> str:
     """
     Escanea una imagen y devuelve la placa.
 
@@ -20,16 +23,20 @@ def scan_plate(img_path) -> str:
     """
 
     image = cv.imread(img_path)
-    try:
-        plate = ocr_reader.readtext(
-            image,
-            detail=0,
-            batch_size=10000,
-            allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
-        )
-    except ValueError as e:
-        print("Ignored Exception: ValueError", e)
-        return ""
+    while image is None:
+        sleep(0)
+        image = cv.imread(img_path)
+        print("Image was None.")
+    
+    if rotate:
+        image = imutils.rotate_bound(image, 180)
+
+    plate = ocr_reader.readtext(
+        image,
+        detail=0,
+        batch_size=10000,
+        allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
+    )
 
     plate_text = ""
     if len(plate) != 0:

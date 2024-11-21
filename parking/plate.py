@@ -10,8 +10,8 @@ from . import ocr
 class Plate:
     COST_HOUR = 14_000
 
-    def __init__(self, plate_img):
-        self.plate = ocr.scan_plate(plate_img)[:7]
+    def __init__(self, plate_img, rotate=False):
+        self.plate = ocr.scan_plate(plate_img, rotate)[:7]
         self.time_in = datetime.now()
         self.time_out = None
         self.pdf = None

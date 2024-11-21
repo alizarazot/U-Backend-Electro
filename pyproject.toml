@@ -24,7 +24,7 @@ Source = 'https://github.com/alizarazot/Parking'
 [tool.hatch]
 [tool.hatch.envs]
 [tool.hatch.envs.default]
-dependencies = ['flask', 'flask-socketio', 'gevent', 'gevent-websocket', 'pyserial', 'pdfkit', 'opencv-python', 'easyocr']
+dependencies = ['flask', 'flask-socketio', 'gevent', 'gevent-websocket', 'pyserial', 'pdfkit', 'opencv-python', 'easyocr', 'imutils']
 python = '3.11'
 
 [tool.hatch.envs.default.scripts]

@@ -90,7 +90,7 @@ def route_notify_car_out():
     socketio.emit("car-out-start", ignore_queue=True)
     socketio.sleep(0)
 
-    target = Plate(path.join(DATA_DIR, "live.jpg")).plate
+    target = Plate(path.join(DATA_DIR, "live.jpg"), rotate=True).plate
     for i, plate in enumerate(data_active_plates):
         if plate.plate == target:
             data_active_plates.pop(i)
