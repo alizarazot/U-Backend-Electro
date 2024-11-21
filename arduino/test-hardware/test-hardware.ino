@@ -45,12 +45,14 @@ void loop() {
     Serial.println("Objeto cerca de la placa.");
     servo1.write(90);
     digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
     servo2.write(90);
   } else {
     Serial.println("Objeto lejos de la placa.");
     servo1.write(0);
     digitalWrite(LED_BUILTIN, LOW);
-    servo2.write(180);
+    delay(500);
+    //servo2.write(180);
   }
   
   delay(2000);
