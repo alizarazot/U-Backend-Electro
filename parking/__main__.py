@@ -74,7 +74,12 @@ def route_notify_car_in():
     socketio.emit("car-in-start", ignore_queue=True)
     socketio.sleep(0)
 
-    data_active_plates.append(Plate(path.join(DATA_DIR, "live.jpg")))
+    plate = Plate(path.join(DATA_DIR, "live.jpg"))
+    if plate.plate.strip() == "":
+        socketio.emit("car-in-end", None)
+        return "Text not found!"
+    
+    data_active_plates.append(plate)
     socketio.emit("car-in-end", data_active_plates[-1].plate)
 
     return "Added: " + data_active_plates[-1].plate

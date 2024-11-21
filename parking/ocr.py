@@ -6,7 +6,6 @@ El proceso de reconocimiento de placas requiere de los siguientes pasos:
 """
 
 import cv2 as cv
-
 import easyocr
 
 # Preload OCR model.
@@ -21,12 +20,16 @@ def scan_plate(img_path) -> str:
     """
 
     image = cv.imread(img_path)
-    plate = ocr_reader.readtext(
-        image,
-        detail=0,
-        batch_size=10000,
-        allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
-    )
+    try:
+        plate = ocr_reader.readtext(
+            image,
+            detail=0,
+            batch_size=10000,
+            allowlist="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ",
+        )
+    except ValueError as e:
+        print("Ignored Exception: ValueError", e)
+        return ""
 
     plate_text = ""
     if len(plate) != 0:
