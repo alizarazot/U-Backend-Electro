@@ -34,6 +34,7 @@ while True:
     d1 = int(read());
     d2 = int(read());
 
+    # Sensor de la salida.
     if d1 < 10:
         write("LED")
         write("ON")
@@ -83,6 +84,14 @@ while True:
             write("VERTICAL")
             sleep(3)
             write("SERVO2")
+            write("HORIZONTAL")
+        elif status == "#":
+            print("Placa ya en el parqueadero.")
+
+            write("SERVO1")
+            write("VERTICAL")
+            sleep(5)
+            write("SERVO1")
             write("HORIZONTAL")
         else:
             print("Carro rechazado.")

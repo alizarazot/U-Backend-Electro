@@ -30,7 +30,7 @@ from . import image
 # Variables de entorno.
 
 CAPTURE_URL = os.getenv("CAPTURE_URL") or "http://192.168.0.110/capture"
-CAPTURE_WAIT = 0.5
+CAPTURE_WAIT = 0.25
 if capture_wait := os.getenv("CAPTURE_WAIT"):
     CAPTURE_WAIT = float(capture_wait)
 
@@ -80,6 +80,14 @@ def route_notify_car_in():
     if plate.plate.strip() == "":
         socketio.emit("car-in-end", None)
         return "FAIL"
+
+    target = plate.plate
+    print("t", target)
+    for i, p in enumerate(data_active_plates):
+        print(p.plate)
+        if p.plate == target:
+            socketio.emit("car-in-end", "#")
+            return "#"
 
     data_active_plates.append(plate)
     socketio.emit("car-in-end", data_active_plates[-1].plate)

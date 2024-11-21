@@ -48,6 +48,8 @@ socket.on("car-in-start", (_) => {
 socket.on("car-in-end", (plate) => {
   if (plate == undefined) {
     spanPlateStatus.innerText = "Placa no detectada";
+  } else if (plate == "#") {
+    spanPlateStatus.innerText = "Placa ya en el parqueadero";
   } else {
     spanPlateStatus.innerText = "Placa añadida: " + plate;
   }
